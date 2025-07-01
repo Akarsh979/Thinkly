@@ -1,3 +1,5 @@
+'use client'
+
 import { useThemeStore } from "@/store/theme-store";
 import { useTheme } from "next-themes";
 import { useEffect } from "react";

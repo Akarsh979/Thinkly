@@ -1,37 +1,28 @@
 'use client'
 
-import { SignInButton, UserButton } from "@clerk/nextjs";
-import { Authenticated, AuthLoading, Unauthenticated, useMutation, useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { Button } from "@/components/ui/button";
-// import { ModeToggle } from "@/components/ui/theme-toggle";
-import ThemeToggle from "@/components/theme/theme-toggle";
+import DocumentCard from "@/components/document-card";
+import CreateDocumentButton from "@/components/create-document-button";
 
 export default function Home() {
 
-  const createDocument = useMutation(api.documents.createDocument);
   const documents = useQuery(api.documents.getDocuments)
 
   return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Unauthenticated>
-        <SignInButton />
-      </Unauthenticated>
-      <Authenticated>
-        <UserButton/>
-       
-       <ThemeToggle/>
+      <main className="p-24 space-y-8">
+      
+      <div className="flex justify-between items-center">
+      <h1 className="text-4xl font-bold">My Documents</h1>  
+      <CreateDocumentButton/>
+      </div>
 
-      <Button onClick={()=>{createDocument({title: "Hello World"})}}>Click me</Button>
-
+      <div className="grid grid-cols-4 gap-4">
       {documents?.map((doc)=>(
-        <div key={doc._id}>{doc.title}</div>
+        <DocumentCard key={doc._id} document={doc}/>
       ))}
+      </div>
 
-      </Authenticated>
-      <AuthLoading>
-        <p>Still loading</p>
-      </AuthLoading>
       </main>
   );
 }

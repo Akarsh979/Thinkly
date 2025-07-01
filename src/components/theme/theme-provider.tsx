@@ -10,7 +10,7 @@ interface ExtentedThemeProviderProps extends ThemeProviderProps{
 function ThemeProvider({children,containerClassName,...props}:ExtentedThemeProviderProps){
    return (
      <NextThemeProvider {...props}>
-      <main className={cn("container mx-auto px-4",containerClassName)}>
+      <main className={cn("container mx-auto",containerClassName)}>
          {children}
        </main>
      </NextThemeProvider>
