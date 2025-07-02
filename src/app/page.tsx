@@ -3,7 +3,7 @@
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import DocumentCard from "@/components/document-card";
-import CreateDocumentButton from "@/components/create-document-button";
+import UploadDocumentButton from "@/components/upload-document-button";
 
 export default function Home() {
 
@@ -14,7 +14,7 @@ export default function Home() {
       
       <div className="flex justify-between items-center">
       <h1 className="text-4xl font-bold">My Documents</h1>  
-      <CreateDocumentButton/>
+      <UploadDocumentButton/>
       </div>
 
       <div className="grid grid-cols-4 gap-4">
