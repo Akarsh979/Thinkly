@@ -6,6 +6,7 @@ import { Id } from "../../convex/_generated/dataModel";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import ChatPanel from "./chat-panel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 function DocumentPageDetail({ slug }: { slug: Id<"documents"> }) {
   const document = useQuery(api.documents.getDocument, {
@@ -68,8 +69,15 @@ function DocumentPageDetail({ slug }: { slug: Id<"documents"> }) {
         <h1 className="text-4xl font-bold">{document?.title}</h1>
       </div>
 
-      <div className="flex gap-12 h-[600px]">
-        <div className="bg-gray-900 p-4 rounded flex-1 h-full overflow-auto">
+      <div className="flex gap-12">
+
+      <Tabs defaultValue="document" className="w-full">
+        <TabsList className="mb-2">
+          <TabsTrigger value="document">Document</TabsTrigger>
+          <TabsTrigger value="chat">Chat</TabsTrigger>
+        </TabsList>
+        <TabsContent value="document">
+                  <div className="bg-gray-900 p-4 rounded-xl flex-1 h-[500px] overflow-auto">
           {loading ? (
             <div className="h-full flex items-center justify-center">
               <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
@@ -96,8 +104,15 @@ function DocumentPageDetail({ slug }: { slug: Id<"documents"> }) {
             </div>
           )}
         </div>
+        </TabsContent>
+        <TabsContent value="chat">
+          <ChatPanel documentId={document._id}/>
+        </TabsContent>
+      </Tabs>   
 
-      <ChatPanel/>
+
+
+
       </div>
     </>
   );
