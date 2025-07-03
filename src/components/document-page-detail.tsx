@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import ChatPanel from "./chat-panel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Skeleton } from "./ui/skeleton";
 
 function DocumentPageDetail({ slug }: { slug: Id<"documents"> }) {
   const document = useQuery(api.documents.getDocument, {
@@ -59,11 +60,27 @@ function DocumentPageDetail({ slug }: { slug: Id<"documents"> }) {
     };
   }, [document]);
 
-  if (!document) {
-    return <div>You don&apos;t have access to view this document</div>;
-  }
+  // if (!document) {
+  //   return <div>You don&apos;t have access to view this document</div>;
+  // }
 
   return (
+    <>
+
+    {!document && (
+      <div className="space-y-8">
+         <div>
+           <Skeleton className="h-[40px] w-[500px]"/>
+         </div>
+         <div className="flex gap-2">
+           <Skeleton className="h-[40px] w-[80px]"/>
+           <Skeleton className="h-[40px] w-[80px]"/>
+         </div>
+           <Skeleton className="h-[500px]"/>
+      </div>
+      )}
+
+    {document && (
     <>
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">{document?.title}</h1>
@@ -110,10 +127,11 @@ function DocumentPageDetail({ slug }: { slug: Id<"documents"> }) {
         </TabsContent>
       </Tabs>   
 
-
-
-
       </div>
+      </>
+    )}
+
+
     </>
   );
 }

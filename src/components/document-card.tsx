@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/card";
 import { Id } from "../../convex/_generated/dataModel";
 import { Button } from "./ui/button";
-import { Eye } from "lucide-react";
+import { Eye, Loader2 } from "lucide-react";
 import Link from "next/link";
 
 interface documentProps {
   title: string;
   _id: Id<"documents">,
+  description?: string,
 }
 
 function DocumentCard({ document }: { document: documentProps }) {
@@ -24,7 +25,13 @@ function DocumentCard({ document }: { document: documentProps }) {
         <CardDescription></CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+        <div>{!document.description ? (
+          <div className="flex justify-center">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          </div>
+        ) : (
+          document.description
+        )}</div>
       </CardContent>
       <CardFooter>
         <Button
