@@ -13,6 +13,7 @@ import { api, internal } from "./_generated/api";
 
 import OpenAI from "openai";
 import { Id } from "./_generated/dataModel";
+import { access } from "fs";
 
 const client = new OpenAI({
   apiKey: process.env["OPENAI_API_KEY"], // This is the default and can be omitted
@@ -220,3 +221,20 @@ export const askQuestion = action({
     return response;
   },
 });
+
+export const deleteDocument = mutation({
+  args: {
+    documentId: v.id("documents"),
+  },
+  handler: async (ctx, args) => {
+    const accessObj = await hasAccessToDocument(ctx, args.documentId);
+
+    if (!accessObj) {
+      throw new ConvexError("You do not have access to this document");
+    }
+
+    await ctx.storage.delete(accessObj.document.fileId);
+    await ctx.db.delete(args.documentId);
+  },
+})
+

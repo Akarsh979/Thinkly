@@ -4,10 +4,11 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2} from "lucide-react";
 import ChatPanel from "./chat-panel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from "./ui/skeleton";
+import DeleteDocumentButton from "./delete-document-button";
 
 function DocumentPageDetail({ slug }: { slug: Id<"documents"> }) {
   const document = useQuery(api.documents.getDocument, {
@@ -84,6 +85,7 @@ function DocumentPageDetail({ slug }: { slug: Id<"documents"> }) {
     <>
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">{document?.title}</h1>
+          <DeleteDocumentButton documentId={document._id}/>
       </div>
 
       <div className="flex gap-12">
