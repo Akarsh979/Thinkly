@@ -22,7 +22,7 @@ function Header(){
          </Link>
 
          <nav>
-          <Link className="hover:text-gray-400" href="/">Documents</Link>
+          <Link className="hover:text-gray-400" href="/dashboard">Documents</Link>
          </nav>
         </div>  
 

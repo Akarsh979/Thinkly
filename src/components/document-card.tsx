@@ -39,7 +39,7 @@ function DocumentCard({ document }: { document: documentProps }) {
           variant="outline"
           asChild
         >
-          <Link href={`/documents/${document._id}`}>
+          <Link href={`/dashboard/documents/${document._id}`}>
           <Eye className="w-4 h-4" />
           <span className="leading-none align-middle">View</span>
           </Link>
