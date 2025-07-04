@@ -8,17 +8,12 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "./ui/form";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { Upload, File as FileIcon, X } from "lucide-react";
 import LoadingButton from "./loading-button";
-import { useState } from "react";
-import { Id } from "../../convex/_generated/dataModel";
 import { Textarea } from "./ui/textarea";
 import { toast } from "sonner"
 

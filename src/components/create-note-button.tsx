@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import CreateNoteForm from "./create-note-form";
 import { useState } from "react";
-import { PlusIcon, Upload } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 
 function CreateNoteButton() {
   const [isOpen, setIsOpen] = useState(false);
