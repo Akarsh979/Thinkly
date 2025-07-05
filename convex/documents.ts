@@ -14,6 +14,7 @@ import { api, internal } from "./_generated/api";
 import OpenAI from "openai";
 import { Id } from "./_generated/dataModel";
 import { access } from "fs";
+import { embed } from "./notes";
 
 const client = new OpenAI({
   apiKey: process.env["OPENAI_API_KEY"], // This is the default and can be omitted
@@ -109,13 +110,16 @@ export const generateDocumentDescription = internalAction({
         ],
       });
 
-    const response =
+    const description =
       chatCompletion.choices[0].message.content ??
       "Could not figure out a description for this document";
 
+    const embedding = await embed(description);  
+
     await ctx.runMutation(internal.documents.updateDocumentDescription, {
       documentId: args.documentId,
-      description: response,
+      description: description,
+      embedding,
     });
   },
 });
@@ -124,10 +128,12 @@ export const updateDocumentDescription = internalMutation({
   args: {
     documentId: v.id("documents"),
     description: v.string(),
+    embedding: v.array(v.float64()),
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.documentId, {
       description: args.description,
+      embedding: args.embedding,
     });
   },
 });

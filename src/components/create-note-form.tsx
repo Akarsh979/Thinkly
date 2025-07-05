@@ -18,7 +18,7 @@ import { Textarea } from "./ui/textarea";
 import { toast } from "sonner"
 
 const noteSchema = z.object({
-  text: z.string().min(1, "Note is required").max(2500),
+  text: z.string().min(1, "Note is required").max(5000),
 });
 
 type UploadFormValues = z.infer<typeof noteSchema>;

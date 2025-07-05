@@ -6,12 +6,24 @@ export default defineSchema({
     title: v.string(),
     description: v.optional(v.string()),
     tokenIdentifier: v.string(), 
+    embedding: v.optional(v.array(v.float64())),
     fileId: v.id("_storage"),
-   }).index('by_tokenIdentifier', ['tokenIdentifier']),
+   }).index('by_tokenIdentifier', ['tokenIdentifier'])
+   .vectorIndex("by_embedding", {
+    vectorField: "embedding",
+    dimensions: 1536,
+    filterFields: ["tokenIdentifier"],
+  }),   
   notes: defineTable({
     text: v.string(),
     tokenIdentifier: v.string(), 
-   }).index('by_tokenIdentifier', ['tokenIdentifier']),   
+    embedding: v.optional(v.array(v.float64())),
+   }).index('by_tokenIdentifier', ['tokenIdentifier'])
+   .vectorIndex("by_embedding", {
+    vectorField: "embedding",
+    dimensions: 1536,
+    filterFields: ["tokenIdentifier"],
+  }),
    chats: defineTable({
     documentId: v.id("documents"),
     tokenIdentifier: v.string(),

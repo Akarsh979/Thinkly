@@ -51,7 +51,7 @@ function NoteDetail({noteId}: {noteId: string}) {
     
     // Render the actual note
     return (
-      <div className="prose prose-gray dark:prose-invert max-w-none">
+      <div className="prose prose-gray dark:prose-invert max-w-none whitespace-pre-line">
         {note.text}
       </div>
     );
