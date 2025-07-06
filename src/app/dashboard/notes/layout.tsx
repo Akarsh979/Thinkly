@@ -11,9 +11,13 @@ import { Calendar, FileText, Loader2 } from "lucide-react";
 import DeleteNoteButton from "@/components/delete-note-button";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useOrganization } from "@clerk/nextjs";
 
 function NotesLayout({ children}: { children: React.ReactNode }) {
-  const notes = useQuery(api.notes.getNotes);
+  const organization = useOrganization();
+  const notes = useQuery(api.notes.getNotes, {
+    orgId: organization.organization?.id,
+  });
 
   const pathname = usePathname();
   const pathNoteId = pathname.split("/").pop() as Id<"notes"> | undefined;

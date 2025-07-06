@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Search } from "lucide-react";
 import { Button } from "./ui/button";
@@ -10,6 +10,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
+import { Dispatch, SetStateAction } from "react";
+import { useOrganization } from "@clerk/nextjs";
 
 const formSchema = z.object({
   search: z.string().min(1, "Message is required"),
@@ -17,7 +19,13 @@ const formSchema = z.object({
 
 type SearchFormValues = z.infer<typeof formSchema>;
 
-function SearchForm({setResults}:{setResults: (notes: typeof api.search.searchAction._returnType)=>void}) {
+function SearchForm({
+  setResults,
+  setIsLoading,
+}: {
+  setResults: (notes: typeof api.search.searchAction._returnType) => void;
+  setIsLoading?: Dispatch<SetStateAction<boolean>>;
+}) {
   const form = useForm<SearchFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -25,18 +33,34 @@ function SearchForm({setResults}:{setResults: (notes: typeof api.search.searchAc
     },
   });
 
-  const searchAction  = useAction(api.search.searchAction)
+  const searchAction = useAction(api.search.searchAction);
+  const organization = useOrganization();
 
-  
   async function onSubmitHandler(values: SearchFormValues) {
-    await searchAction({ search: values.search }).then(setResults);
-    form.reset();
+    if (setIsLoading) {
+      setIsLoading(true);
+    }
+
+    try {
+      const results = await searchAction({
+        search: values.search,
+        orgId: organization.organization?.id,
+      });
+      setResults(results);
+    } catch (error) {
+      console.error("Search error:", error);
+    } finally {
+      form.reset();
+    }
   }
 
   return (
     <div>
       <Form {...form}>
-        <form className="flex gap-2" onSubmit={form.handleSubmit(onSubmitHandler)}>
+        <form
+          className="flex gap-2"
+          onSubmit={form.handleSubmit(onSubmitHandler)}
+        >
           <FormField
             control={form.control}
             name="search"

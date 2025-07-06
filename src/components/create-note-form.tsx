@@ -16,6 +16,7 @@ import { api } from "../../convex/_generated/api";
 import LoadingButton from "./loading-button";
 import { Textarea } from "./ui/textarea";
 import { toast } from "sonner"
+import { useOrganization } from "@clerk/nextjs";
 
 const noteSchema = z.object({
   text: z.string().min(1, "Note is required").max(5000),
@@ -25,6 +26,7 @@ type UploadFormValues = z.infer<typeof noteSchema>;
 
 function CreateNoteForm({ onNoteCreated }: { onNoteCreated: () => void }) {
   const createNote = useMutation(api.notes.createNote);
+  const organization = useOrganization();
 
   const form = useForm<UploadFormValues>({
     resolver: zodResolver(noteSchema),
@@ -34,10 +36,10 @@ function CreateNoteForm({ onNoteCreated }: { onNoteCreated: () => void }) {
   });
 
   async function onSubmitHandler(values: UploadFormValues) {
-    console.log(values);
 
     await createNote({
       text: values.text,
+      orgId: organization.organization?.id,
     });
     toast.success("Note created successfully!");
     onNoteCreated();

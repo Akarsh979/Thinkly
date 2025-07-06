@@ -35,7 +35,15 @@ export async function hasAccessToDocument(
     return null;
   }
 
-  if (document?.tokenIdentifier !== userId) return null;
+  if (document.orgId) {
+    const hasAccess = await hasOrgAccess(ctx,document.orgId);
+
+    if (!hasAccess) {
+      return null;
+    }
+  } else {
+     if (document?.tokenIdentifier !== userId) return null;
+  }
 
   return { document, userId };
 }
@@ -59,6 +67,7 @@ export const createDocument = mutation({
   args: {
     title: v.string(),
     fileId: v.id("_storage"),
+    orgId: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
@@ -66,12 +75,31 @@ export const createDocument = mutation({
       throw new ConvexError("Not Authenticated");
     }
 
-    const documentId = await ctx.db.insert("documents", {
-      title: args.title,
-      fileId: args.fileId,
-      tokenIdentifier: userId,
-      description: "",
-    });
+    let documentId:Id<"documents">;
+
+    if (args.orgId) {
+      const isMember = await hasOrgAccess(ctx,args.orgId);
+      if (!isMember) {
+        throw new ConvexError("You do not have access to this organization");
+      }
+
+        documentId = await ctx.db.insert("documents", {
+          title: args.title,
+          fileId: args.fileId,
+          description: "",
+          orgId: args.orgId,
+        });    
+
+    } else {
+        documentId = await ctx.db.insert("documents", {
+          title: args.title,
+          fileId: args.fileId,
+          tokenIdentifier: userId,
+          description: "",
+        });
+    }
+
+
 
     await ctx.scheduler.runAfter(
       0,
@@ -138,16 +166,48 @@ export const updateDocumentDescription = internalMutation({
   },
 });
 
+export const hasOrgAccess = async (ctx: MutationCtx | QueryCtx, orgId:string) => {
+   const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
+    if (!userId) {
+      return false;
+    }
+  
+    const membership = await ctx.db
+    .query("memberships")
+    .withIndex("by_orgId_userId", (q) =>
+      q.eq("orgId", orgId).eq("userId", userId))
+    .first();
+
+    return !!membership;
+}
+
 export const getDocuments = query({
-  handler: async (ctx) => {
+  args: {
+    orgId: v.optional(v.string()),
+  },
+  handler: async (ctx,args) => {
     const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
     if (!userId) {
       return undefined;
     }
-    return await ctx.db
+    
+    if(args.orgId){
+      const isMember = await hasOrgAccess(ctx, args.orgId);
+      if (!isMember) {
+        return undefined;
+      }
+
+      return await ctx.db
+      .query("documents")
+      .withIndex("by_orgId", (q) => q.eq("orgId", args.orgId))
+      .collect();
+    }else{
+      return await ctx.db
       .query("documents")
       .withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", userId))
       .collect();
+    }
+
   },
 });
 

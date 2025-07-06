@@ -23,6 +23,7 @@ import {
 import LoadingButton from "./loading-button";
 import { useState } from "react";
 import { Id } from "../../convex/_generated/dataModel";
+import { useOrganization } from "@clerk/nextjs";
 
 const uploadSchema = z.object({
   title: z.string().min(1, "Title is required").max(250),
@@ -36,6 +37,7 @@ function UploadDocumentForm({ onUpload }: { onUpload: () => void }) {
   const generateUploadUrl = useMutation(api.documents.generateUploadUrl);
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const organization = useOrganization();
 
   const form = useForm<UploadFormValues>({
     resolver: zodResolver(uploadSchema),
@@ -60,6 +62,7 @@ function UploadDocumentForm({ onUpload }: { onUpload: () => void }) {
     await createDocument({
       title: values.title,
       fileId: storageId as Id<"_storage">,
+      orgId: organization.organization?.id,
     });
     onUpload();
   }
