@@ -156,7 +156,7 @@ function UploadDocumentForm({ onUpload }: { onUpload: () => void }) {
                       }`}
                       onChange={handleFileChange}
                       onBlur={field.onBlur}
-                      accept=".doc,.docx,.txt"
+                      accept=".txt"
                     />
                     
                     {!selectedFile ? (
@@ -167,7 +167,7 @@ function UploadDocumentForm({ onUpload }: { onUpload: () => void }) {
                           <span className="text-primary">browse</span>
                         </div>
                         <p className="text-sm text-muted-foreground">
-                          Supports: PDF, DOC, DOCX, TXT, MD (max 10MB)
+                          Supports: DOCX, TXT (max 10MB)
                         </p>
                       </div>
                     ) : (

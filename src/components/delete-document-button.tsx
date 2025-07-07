@@ -29,8 +29,8 @@ function DeleteDocumentButton({ documentId }: { documentId: Id<"documents"> }) {
     <AlertDialog open={isOpen} onOpenChange={(open)=>setIsOpen(open)}>
       <AlertDialogTrigger asChild>
         <Button
-          variant="destructive"
-          className="flex items-center gap-2 cursor-pointer"
+          variant="outline"
+          className="flex items-center gap-2 cursor-pointer border border-purple-400 text-purple-500 hover:bg-purple-400/10 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
         >
           <TrashIcon className="w-4 h-4" />
           Delete
@@ -52,7 +52,7 @@ function DeleteDocumentButton({ documentId }: { documentId: Id<"documents"> }) {
               setIsLoading(true);
               deleteDocument({ documentId })
               .then(()=>{
-                router.push("/");
+                router.push("/dashboard");
               })
               .finally(() => {
                 setIsLoading(false);
@@ -60,6 +60,7 @@ function DeleteDocumentButton({ documentId }: { documentId: Id<"documents"> }) {
             }}            
               isLoading={isLoading}
               loadingText="Deleting..."
+              className="bg-red-600 hover:bg-red-700 text-white border-none"
             >
               Delete
             </LoadingButton>

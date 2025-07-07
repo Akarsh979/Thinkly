@@ -2,10 +2,9 @@
 
 import SearchForm from "@/components/search-form";
 import { useEffect, useState } from "react";
-import { Doc } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
 import Link from "next/link";
-import { FileIcon, Loader2, Notebook, NotebookPen, Search } from "lucide-react";
+import { FileIcon, NotebookPen, Search } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
  

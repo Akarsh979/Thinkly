@@ -4,7 +4,7 @@ import ThemeProvider  from "@/components/theme/theme-provider";
 import { ClerkProvider, useAuth } from "@clerk/nextjs";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
-import { dark, neobrutalism } from '@clerk/themes'
+import { dark} from '@clerk/themes'
 import { useThemeStore } from "@/store/theme-store";
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL as string);

@@ -5,7 +5,6 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useAction } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { Doc, Id } from "../../convex/_generated/dataModel";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

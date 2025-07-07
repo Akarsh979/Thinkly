@@ -6,13 +6,12 @@ import { Id } from "../../convex/_generated/dataModel";
 import { useRouter } from "next/navigation";
 import { FileX } from "lucide-react";
 import { Button } from "./ui/button";
-import { useEffect } from "react";
 
 function NoteDetail({noteId}: {noteId: string}) {
   const router = useRouter();
   
   // Wrap the query in a try/catch to handle invalid IDs
-  let validId = true;
+  // let validId = true;
   try {
     // Using a valid ID check before the query
     const note = useQuery(api.notes.getNote, {
@@ -28,7 +27,7 @@ function NoteDetail({noteId}: {noteId: string}) {
             Note not found
           </h3>
           <p className="text-gray-500 dark:text-gray-400 mb-6 text-center">
-            The note you're looking for doesn't exist or you don't have permission to view it.
+            The note you&apos;re looking for doesn&apos;t exist or you don&apos;t have permission to view it.
           </p>
           <Button onClick={() => router.push('/dashboard/notes')}>
             Back to Notes
@@ -57,6 +56,7 @@ function NoteDetail({noteId}: {noteId: string}) {
     );
     
   } catch (error) {
+    console.log(error);
     // If there's an error with the ID format or query
     return (
       <div className="flex flex-col items-center justify-center h-full p-8">

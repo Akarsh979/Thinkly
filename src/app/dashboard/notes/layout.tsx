@@ -7,7 +7,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Calendar, FileText, Loader2 } from "lucide-react";
+import { Calendar, Loader2 } from "lucide-react";
 import DeleteNoteButton from "@/components/delete-note-button";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";

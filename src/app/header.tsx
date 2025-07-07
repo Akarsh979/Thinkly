@@ -17,14 +17,17 @@ function Header(){
            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg text-primary-foreground shadow-sm shadow-primary/20">
              <Image src="/logo.png" width={24} height={24} alt="Thinkly logo" className="rounded-sm"/>
            </div>
+           <div className="flex items-center gap-8">
            <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
              THINKLY
            </span>
+             <div className="pt-0.5"><OrganizationSwitcher/></div>
+           </div>
          </Link>
 
          <nav className="flex items-center gap-8">
-          <OrganizationSwitcher />
-          <Link className="hover:text-gray-400" href="/dashboard">Dashboard</Link>
+
+          {/* <Link className="hover:text-gray-400" href="/dashboard">Dashboard</Link> */}
          </nav>
         </div>  
 
