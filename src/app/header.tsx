@@ -13,7 +13,7 @@ function Header(){
        <div className="container mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4">  
 
         <div className="flex items-center gap-8">
-         <Link href="/" className="flex items-center gap-2 text-xl font-bold tracking-tight">
+         <Link href="/dashboard" className="flex items-center gap-2 text-xl font-bold tracking-tight">
            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg text-primary-foreground shadow-sm shadow-primary/20">
              <Image src="/logo.png" width={24} height={24} alt="Thinkly logo" className="rounded-sm"/>
            </div>

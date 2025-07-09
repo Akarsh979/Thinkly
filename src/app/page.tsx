@@ -2,8 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Brain, FileText, FileUp } from "lucide-react";
+import { SignInButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function LandingPage(){
+export default async function LandingPage(){
+   const {userId} = await auth();
+   if (userId) {
+     redirect("/dashboard");
+   }
+
    return (
       <div className="flex flex-col min-h-screen">
          {/* Hero Section */}
@@ -29,11 +37,11 @@ export default function LandingPage(){
                         Organize your thoughts, notes, and documents in one place. Thinkly helps you think clearly.
                      </p>
                      <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                        <Link href="/dashboard">
+                        <SignInButton mode="modal" fallbackRedirectUrl="/dashboard">
                            <Button size="lg" className="gap-2">
                               Get Started <ArrowRight />
                            </Button>
-                        </Link>
+                        </SignInButton>
                         {/* <Link href="/dashboard/documents">
                            <Button variant="outline" size="lg">
                               Explore Features
